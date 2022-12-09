@@ -1,3 +1,10 @@
-# LineFollowTesting
+# Version 1.0
 
-Project Code for Line Follow part of Robocup only. This will include obstacle, line tracking, intersections.
+Includes base code for changing inbetween modes, including:
+- Calibration
+- Main Program
+- Stopped State
+
+Includes a closed-loop-control algorithm (PID) for line follow
+
+Includes calibration of colour sensors, with the ability to quickly change calibration variables automatically in a new environment
