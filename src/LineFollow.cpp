@@ -1,31 +1,38 @@
+// ------------------------------------------------------------------------------------------ INCLUDES
+
 #include <Arduino.h>
 #include "BaseFunctions.h"
 #include "LineFollow.h"
 
+// ------------------------------------------------------------------------------------------ VARIABLES
+
 int Error, LastError, Derivative, Integral;
 int Turn, LMotor, RMotor;
 
-void SpeedGuard(int v) {
-	if (LMotor > MAX-MID) LMotor = MAX-MID;
+// ------------------------------------------------------------------------------------------ FUNCTIONS
+
+void SpeedGuard() {									// Stops the motors from exceeding the allowed PWM Duty cycle lengths
+	if (LMotor > MAX-MID) LMotor = MAX-MID;	
  	if (RMotor > MAX-MID) RMotor = MAX-MID;
  	if (LMotor < MIN-MID) LMotor = MIN-MID;
   	if (RMotor < MIN-MID) RMotor = MIN-MID;
 }
 
 void PID(int v, float kp, float ki, float kd) {
-	Error = (CSensorV[0] + CSensorV[1] + CSensorV[2]) - (CSensorV[3] + CSensorV[4] + CSensorV[5]);
-	Integral = Error + Integral;
-	Derivative = Error - LastError;
+	Error = (CSensorV[0] + CSensorV[1] + CSensorV[2]*1.2) - (CSensorV[3] + CSensorV[4] + CSensorV[5]*1.2);
+													// Takes a weighted sum of the left and right side to determine a error
+	Integral = Error + Integral;					// Adds to the running error, to calculate the size of the turn
+	Derivative = Error - LastError;					// Finds the difference between the current error and last error, to see the sharpness of the turn
 
-	Turn = kp*Error + ki*Integral + kd*Derivative;
+	Turn = kp*Error + ki*Integral + kd*Derivative;	// Takes the weighted sum of all values
 	LMotor = v + Turn;
 	RMotor = v - Turn;
-	SpeedGuard(v);
+	SpeedGuard();
 
 	Run(LMotor, RMotor);
-	LastError = Error;
+	LastError = Error;								// The last error becomes the current error at the end of this calculation
 
-	if(PIDOut == 1) {
+	if(PIDOut == 1) {								// Debugging
 		char Buffer[100];
 		sprintf(Buffer, "\t\tError:%d\tIntegral:%d\tDerivative:%d\tLMotor:%d\tRMotor:%d", Error, Integral, Derivative, LMotor, RMotor);
 		Serial.print(Buffer);

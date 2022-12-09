@@ -1,3 +1,5 @@
+// ------------------------------------------------------------------------------------------ INCLUDES
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
@@ -6,9 +8,11 @@
 
 Adafruit_PWMServoDriver motor = Adafruit_PWMServoDriver(0x40);
 
+// ------------------------------------------------------------------------------------------ FUNCTIONS
+
 void setup() {
 	Serial.begin(115200);
-	Serial.println("Starting Program");
+	Serial.println("Starting Program");						// Used to check if there is a program reset that was unintentionally caused by voltage drops from too much current being drawn from the motors
 
   	motor.begin();
 	motor.setPWMFreq(220);
@@ -17,11 +21,9 @@ void setup() {
 	for(int i=0; i<6; i++) {
 		pinMode(CSensors[i], INPUT);
 	}
-
-	pinMode(ButtonModePin, INPUT);
 }
 
-void Mode() {
+void Mode() {												// Change the mode we are in
 	String IncomingByte = "";
 
 	if(Serial.available() > 0) {
@@ -35,6 +37,15 @@ void Mode() {
 }
 
 void Run(int v1, int v2) {
+	/*
+		A simplistic view for the movement of the robot, to help with the readibility of the code.
+
+		This is used as we do not need to account for direction (PWM Duty Cycle), or the orientati
+		on of the motor.
+
+		This is simply a speed for the left and right side, with a positive and negative number, r
+		epresenting a forwards or backwards spin respectively.
+	*/
 	motor.setPin(DMotors[0], MID+v1);
 	motor.setPin(DMotors[1], MID-v2);
 	motor.setPin(DMotors[2], MID+v1);

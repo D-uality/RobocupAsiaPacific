@@ -10,7 +10,6 @@ extern const int CSensors[6];
 extern int CSensorV[6];
 extern const int CLBound;
 extern const int CUBound;
-extern const int ButtonModePin;
 
 extern const int RunOut;
 extern const int ReadCSensorOut;
