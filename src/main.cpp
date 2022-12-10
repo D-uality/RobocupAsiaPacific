@@ -16,6 +16,8 @@ const int CSensors[6] = {A0, A1, A2, A3, A4, A5};			// Colour Sensors, pinIn for
 int CSensorV[6];											// Variable to hold colour sensor readings
 const int CLBound = 0;										// ColourLowerBound for the calibration
 const int CUBound = 100;									// ColuourUpperBound for the calibration
+int InNum[6][2][2];
+int CalibrationNum[6][2];
 
 const int RunOut = 0;										// The motor PWM Duty cycles values for debugging
 const int ReadCSensorOut = 1;								// The colour sensor values for debugging
@@ -32,6 +34,7 @@ void loop() {
 
 		Serial.print("Stopped");
 		Run(0, 0);
+		InitaliseCalibrationNum();
 
 	} else if(mode == 1) {					// The real program for the entire run
 

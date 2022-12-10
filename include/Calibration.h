@@ -2,6 +2,7 @@
 #define Calibration
 
 void CalibrateCSensorV(int LBound, int UBound);
+void InitaliseCalibrationNum();
 void Calibrate();
 
 #endif

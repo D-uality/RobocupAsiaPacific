@@ -19,23 +19,22 @@
 // ------------------------------------------------------------------------------------------ FUNCTIONS	
 
 void CalibrateCSensorV(int LBound, int UBound) {
-	int InNum[6][2][2];
-	int CalibrationNum[6][2];
+	
 
-	for(int SensorNum=0; SensorNum<6; SensorNum++) {													// For each sensor
-		for(int Extremity=0; Extremity<2; Extremity++) {												// For each extremity
-			for(int i=0; i<2; i++){
-				InNum[SensorNum][Extremity][i] = EEPROM.read(4*SensorNum + 2*Extremity + i);			// Read from EEPROM with algorithm to expand from an array (linear addresses), to a 4d array
-			}
-
-			InNum[SensorNum][Extremity][1] = InNum[SensorNum][Extremity][1] * 256;						// Multiply the second part of each number by 256, as the 8th bit is 2^8 is 256
-																										// We do not need to worry about the 9th bit, as our values will never be max value 
-
-			CalibrationNum[SensorNum][Extremity] = InNum[SensorNum][Extremity][0] + InNum[SensorNum][Extremity][1];
-																										// Add both 8-bit numbers together to receive the original 10-bit number
-		}
+	for(int SensorNum=0; SensorNum<6; SensorNum++) {
 		CSensorV[SensorNum] = map(CSensorV[SensorNum], CalibrationNum[SensorNum][1], CalibrationNum[SensorNum][0], LBound, UBound);
-																										// Using these values, we can map and create consistency
+	}
+}
+
+void InitaliseCalibrationNum() {
+	for(int SensorNum=0; SensorNum<6; SensorNum++) {
+		for(int Extremity=0; Extremity<2; Extremity++) {
+			for(int i=0; i<2; i++){
+				InNum[SensorNum][Extremity][i] = EEPROM.read(4*SensorNum + 2*Extremity + i);
+			}
+			InNum[SensorNum][Extremity][1] = InNum[SensorNum][Extremity][1] * 256;
+			CalibrationNum[SensorNum][Extremity] = InNum[SensorNum][Extremity][0] + InNum[SensorNum][Extremity][1];
+		}
 	}
 }
 
