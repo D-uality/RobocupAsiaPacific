@@ -10,8 +10,8 @@
 const int DMotors[4] = {0, 1, 2, 3};						// Drive Motors, pinOut for 16 Channel PWM Servo Driver
 const int StraightWeight = 32;								// The right side drives slightly slower than that of the left side, hence the right needs a constant increase in PWM cycles
 const int MID = 1278;										// The midpoint for the motors with a PWM frequence of 200
-const int MIN = MID-700;									// The minimum PWM HIGH time for the motor to start spinning
-const int MAX = MID+700;									// The maximum PWM HIGH time for the motor to continue spinning
+const int MIN = MID-800;									// The minimum PWM HIGH time for the motor to start spinning
+const int MAX = MID+800;									// The maximum PWM HIGH time for the motor to continue spinning
 const int CSensors[6] = {A0, A1, A2, A3, A4, A5};			// Colour Sensors, pinIn for the Arduino
 int CSensorV[6];											// Variable to hold colour sensor readings
 const int CLBound = 0;										// ColourLowerBound for the calibration
@@ -40,14 +40,21 @@ void loop() {
 
 		Serial.print("Running");
 		ReadCSensorV();
-		PID(275, 8, 0, 0);
+		PID(400, 8, 0, 5);
 
-	} else {								// Calibrate the colour sensors
+	} else if(mode == 2) {								// Calibrate the colour sensors
 
 		Serial.print("Calibrating");
 		Run(0, 0);
 		Calibrate();
 
+	} else {
+
+		Serial.print("Reading");
+		ReadCSensorV();
+		Run(0, 0);
+	
+	
 	}
 	
 	Serial.println();						// End of a program cycle

@@ -18,12 +18,8 @@
 
 // ------------------------------------------------------------------------------------------ FUNCTIONS	
 
-void CalibrateCSensorV(int LBound, int UBound) {
-	
-
-	for(int SensorNum=0; SensorNum<6; SensorNum++) {
-		CSensorV[SensorNum] = map(CSensorV[SensorNum], CalibrationNum[SensorNum][1], CalibrationNum[SensorNum][0], LBound, UBound);
-	}
+void CalibrateCSensorV(int i, int LBound, int UBound) {
+	CSensorV[i] = map(CSensorV[i], CalibrationNum[i][1], CalibrationNum[i][0], LBound, UBound);
 }
 
 void InitaliseCalibrationNum() {
@@ -37,6 +33,7 @@ void InitaliseCalibrationNum() {
 		}
 	}
 }
+
 
 void Calibrate() {
 																										// Defined variables locally, as having them global would mean that they will take up RAM on the Arduino board.

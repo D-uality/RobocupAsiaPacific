@@ -33,6 +33,7 @@ void Mode() {												// Change the mode we are in
 		if(IncomingByte == "s") mode = 0;
 		if(IncomingByte == "g") mode = 1;
 		if(IncomingByte == "c") mode = 2;
+		if(IncomingByte == "r") mode = 3;
 	}
 }
 
@@ -62,9 +63,9 @@ void ReadCSensorV() {
 	for(int SensorNum=0; SensorNum<6; SensorNum++) {
 		CSensorV[SensorNum] = analogRead(CSensors[SensorNum]);
 		if(SensorNum==0 || SensorNum==1 || SensorNum==2) CSensorV[SensorNum] = map(CSensorV[SensorNum], 0, 1023, 1023, 0);
-	}
 
-	CalibrateCSensorV(CLBound, CUBound);
+		CalibrateCSensorV(SensorNum, CLBound, CUBound);
+	}
 
 	if(ReadCSensorOut == 1) {
 		char Buffer[100];
